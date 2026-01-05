@@ -1,30 +1,24 @@
 package pl.edu.pjatk.weathermonitor.web.rest;
 
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
-
 import pl.edu.pjatk.weathermonitor.service.WeatherMeasurementService;
-import pl.edu.pjatk.weathermonitor.domain.WeatherMeasurement;
-import pl.edu.pjatk.weathermonitor.repository.WeatherMeasurementRepository;
 import pl.edu.pjatk.weathermonitor.web.rest.dto.WeatherMeasurementResponse;
-import org.springframework.data.domain.PageRequest;
 
 import java.util.List;
 
+@Validated
 @RestController
 @RequestMapping("/api/cities")
 public class WeatherMeasurementRestController {
 
     private final WeatherMeasurementService weatherMeasurementService;
-    private final WeatherMeasurementRepository weatherMeasurementRepository;
 
-    public WeatherMeasurementRestController(
-            WeatherMeasurementService weatherMeasurementService,
-            WeatherMeasurementRepository weatherMeasurementRepository
-    ) {
+    public WeatherMeasurementRestController(WeatherMeasurementService weatherMeasurementService) {
         this.weatherMeasurementService = weatherMeasurementService;
-        this.weatherMeasurementRepository = weatherMeasurementRepository;
     }
 
     @PostMapping("/{cityId}/weather/refresh")
@@ -35,49 +29,14 @@ public class WeatherMeasurementRestController {
 
     @GetMapping("/{cityId}/weather/latest")
     public WeatherMeasurementResponse getLatest(@PathVariable Long cityId) {
-        WeatherMeasurement measurement = weatherMeasurementRepository
-                .findTopByCity_IdOrderByMeasuredAtDesc(cityId)
-                .orElseThrow(() -> new ResponseStatusException(
-                        HttpStatus.NOT_FOUND,
-                        "No weather measurement for city: " + cityId
-                ));
-
-        return new WeatherMeasurementResponse(
-                measurement.getId(),
-                measurement.getCity().getId(),
-                measurement.getTemperature(),
-                measurement.getFeelsLikeTemperature(),
-                measurement.getHumidity(),
-                measurement.getPressure(),
-                measurement.getWindSpeed(),
-                measurement.getWeatherDescription(),
-                measurement.getMeasuredAt()
-        );
+        return weatherMeasurementService.getLatest(cityId);
     }
+
     @GetMapping("/{cityId}/weather/history")
     public List<WeatherMeasurementResponse> getHistory(
             @PathVariable Long cityId,
-            @RequestParam(defaultValue = "50") int limit
+            @RequestParam(defaultValue = "50") @Min(1) @Max(500) int limit
     ) {
-        if (limit < 1 || limit > 500) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "limit must be between 1 and 500");
-        }
-
-        return weatherMeasurementRepository
-                .findByCity_IdOrderByMeasuredAtDesc(cityId, PageRequest.of(0, limit))
-                .stream()
-                .map(m -> new WeatherMeasurementResponse(
-                        m.getId(),
-                        m.getCity().getId(),
-                        m.getTemperature(),
-                        m.getFeelsLikeTemperature(),
-                        m.getHumidity(),
-                        m.getPressure(),
-                        m.getWindSpeed(),
-                        m.getWeatherDescription(),
-                        m.getMeasuredAt()
-                ))
-                .toList();
+        return weatherMeasurementService.getHistory(cityId, limit);
     }
 }
-

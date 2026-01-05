@@ -33,4 +33,10 @@ openweather:
   units: metric
   language: pl
 
+weather:
+  scheduler:
+    enabled: true
+    refresh-interval-ms: 600000
+  measurements:
+    history-limit: 100
 
