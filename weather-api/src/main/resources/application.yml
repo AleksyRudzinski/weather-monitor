@@ -1,0 +1,43 @@
+spring:
+  application:
+    name: weather-monitor
+
+  datasource:
+    url: jdbc:h2:file:./data/weatherdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
+  thymeleaf:
+    cache: false
+
+server:
+  port: 8080
+
+openweather:
+  base-url: https://api.openweathermap.org/data/2.5
+  api-key: ${OPENWEATHER_API_KEY}
+  units: metric
+  language: pl
+
+weather:
+  scheduler:
+    enabled: true
+    refresh-interval-ms: 600000
+
+  measurements:
+    history-limit: 50
+
