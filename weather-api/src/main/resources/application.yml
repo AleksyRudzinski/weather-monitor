@@ -24,6 +24,11 @@ spring:
   thymeleaf:
     cache: false
 
+  jackson:
+    serialization:
+      indent_output: true
+      write-dates-as-timestamps: false
+
 server:
   port: 8080
 
