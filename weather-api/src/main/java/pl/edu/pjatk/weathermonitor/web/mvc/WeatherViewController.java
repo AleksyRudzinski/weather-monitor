@@ -4,12 +4,12 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import pl.edu.pjatk.weathermonitor.service.CityService;
-import pl.edu.pjatk.weathermonitor.service.WeatherMeasurementService;
-import pl.edu.pjatk.weathermonitor.web.mvc.dto.CityDashboardItem;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import pl.edu.pjatk.weathermonitor.service.CityService;
+import pl.edu.pjatk.weathermonitor.service.WeatherMeasurementService;
+import pl.edu.pjatk.weathermonitor.web.mvc.dto.CityDashboardItem;
 
 @Controller
 public class WeatherViewController {
@@ -65,8 +65,32 @@ public class WeatherViewController {
 
         return "index";
     }
+
+    @GetMapping("/ui/cities/{cityId}")
+    public String getCityDetails(@PathVariable Long cityId, Model model) {
+        var city = cityService.getCityById(cityId);
+
+        // latest może nie istnieć -> wtedy nie wywalamy całej strony
+        Object latest;
+        try {
+            latest = weatherMeasurementService.getLatest(cityId);
+        } catch (Exception ignored) {
+            latest = null;
+        }
+
+        var history = weatherMeasurementService.getHistory(cityId, historyLimit);
+
+        model.addAttribute("city", city);
+        model.addAttribute("latest", latest);
+        model.addAttribute("history", history);
+        model.addAttribute("historyLimit", historyLimit);
+
+        return "city-details";
+    }
+
+    // refresh z DASHBOARDU -> wracamy na "/"
     @PostMapping("/ui/cities/{cityId}/refresh")
-    public String refreshCity(@PathVariable Long cityId, RedirectAttributes ra) {
+    public String refreshCityFromDashboard(@PathVariable Long cityId, RedirectAttributes ra) {
         try {
             weatherMeasurementService.refreshWeatherForCity(cityId);
             ra.addFlashAttribute("toastSuccess", "Odświeżono pogodę dla miasta ID: " + cityId);
@@ -74,5 +98,17 @@ public class WeatherViewController {
             ra.addFlashAttribute("toastError", "Nie udało się odświeżyć (ID: " + cityId + ")");
         }
         return "redirect:/";
+    }
+
+    // refresh ze SZCZEGÓŁÓW -> wracamy na "/ui/cities/{id}"
+    @PostMapping("/ui/cities/{cityId}/refresh/details")
+    public String refreshCityFromDetails(@PathVariable Long cityId, RedirectAttributes ra) {
+        try {
+            weatherMeasurementService.refreshWeatherForCity(cityId);
+            ra.addFlashAttribute("toastSuccess", "Odświeżono pogodę dla miasta ID: " + cityId);
+        } catch (Exception e) {
+            ra.addFlashAttribute("toastError", "Nie udało się odświeżyć (ID: " + cityId + ")");
+        }
+        return "redirect:/ui/cities/" + cityId;
     }
 }

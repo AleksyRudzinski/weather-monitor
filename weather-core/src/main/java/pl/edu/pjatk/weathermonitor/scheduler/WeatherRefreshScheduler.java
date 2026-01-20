@@ -12,6 +12,7 @@ import pl.edu.pjatk.weathermonitor.repository.RefreshJobItemRepository;
 import pl.edu.pjatk.weathermonitor.repository.RefreshJobRepository;
 import pl.edu.pjatk.weathermonitor.service.WeatherMeasurementService;
 
+import java.time.Duration;
 import java.time.OffsetDateTime;
 
 @Component
@@ -44,7 +45,7 @@ public class WeatherRefreshScheduler {
 
     @Scheduled(
             fixedDelayString = "${weather.scheduler.refresh-interval-ms}",
-            initialDelay = 5000 // <--- TO ZMIANA: Startuj po 5 sekundach od uruchomienia
+            initialDelay = 5000 // Startuj po 5 sekundach od uruchomienia
     )
     public void refreshAllCities() {
         var cities = cityRepository.findAll();
@@ -54,18 +55,22 @@ public class WeatherRefreshScheduler {
             return;
         }
 
-        // 1. Rozpoczynamy zadanie (Job)
+        // 1) Start joba (czas startu + zapis Job)
+        OffsetDateTime jobStart = OffsetDateTime.now();
         log.info("Scheduler: starting refresh for {} cities", cities.size());
-        RefreshJob job = new RefreshJob(OffsetDateTime.now());
+
+        RefreshJob job = new RefreshJob(jobStart);
         job = refreshJobRepository.save(job);
 
         int success = 0;
         int failed = 0;
 
-        // 2. Iterujemy po miastach
+        // 2) Iterujemy po miastach
         for (var city : cities) {
             String status;
             String errorMessage = null;
+
+            OffsetDateTime attemptAt = OffsetDateTime.now();
 
             try {
                 weatherMeasurementService.refreshWeatherForCity(city.getId());
@@ -74,29 +79,37 @@ public class WeatherRefreshScheduler {
             } catch (Exception ex) {
                 status = "FAILED";
                 errorMessage = ex.getMessage();
-                // przycinamy error, jeśli jest za długi, żeby nie wywaliło bazy (kolumna ma 500 znaków)
+
+                // przycinamy error, jeśli jest za długi (kolumna ma 500 znaków)
                 if (errorMessage != null && errorMessage.length() > 500) {
                     errorMessage = errorMessage.substring(0, 500);
                 }
+
                 failed++;
                 log.warn("Scheduler: refresh failed for cityId={}", city.getId(), ex);
             }
 
-            // 3. Zapisujemy wynik dla konkretnego miasta (Item)
+            // 3) Zapisujemy wynik dla konkretnego miasta (Item)
             RefreshJobItem item = new RefreshJobItem(
                     job,
                     city,
                     status,
                     errorMessage,
-                    OffsetDateTime.now()
+                    attemptAt
             );
             refreshJobItemRepository.save(item);
         }
 
-        // 4. Kończymy zadanie (Job)
-        job.markCompleted(OffsetDateTime.now());
+        // 4) Koniec joba: status + endTime + duration
+        OffsetDateTime jobEnd = OffsetDateTime.now();
+
+        if (failed > 0) job.markFailed(jobEnd);
+        else job.markCompleted(jobEnd);
+
         refreshJobRepository.save(job);
 
-        log.info("Scheduler: done. JobId={}, success={}, failed={}", job.getId(), success, failed);
+        long durationMs = Duration.between(jobStart, jobEnd).toMillis();
+        log.info("Scheduler: done. JobId={}, success={}, failed={}, durationMs={}",
+                job.getId(), success, failed, durationMs);
     }
 }

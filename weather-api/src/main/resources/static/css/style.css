@@ -1,0 +1,106 @@
+:root { --card-radius: 18px; }
+
+/* ===== Base / wspólne ===== */
+body {
+    background:
+            radial-gradient(1200px 600px at 20% 0%, rgba(13,110,253,.10), transparent 60%),
+            radial-gradient(900px 500px at 90% 10%, rgba(25,135,84,.10), transparent 55%),
+            #f8f9fa;
+}
+
+.nav-blur {
+    backdrop-filter: blur(10px);
+    background: rgba(255,255,255,.75);
+    border-bottom: 1px solid rgba(0,0,0,.06);
+}
+
+.hero {
+    border-radius: 26px;
+    background: linear-gradient(135deg, rgba(13,110,253,.14), rgba(25,135,84,.10));
+    border: 1px solid rgba(0,0,0,.06);
+}
+
+.pill { border: 1px solid rgba(0,0,0,.08); border-radius: 999px; }
+.muted-mini { color: rgba(0,0,0,.58); font-size: .92rem; }
+.mono {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+    "Liberation Mono", "Courier New", monospace;
+}
+
+.soft-divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(0,0,0,.10), transparent);
+    margin: 14px 0;
+}
+
+.btn-soft {
+    border-radius: 12px;
+    border: 1px solid rgba(0,0,0,.08);
+    background: rgba(255,255,255,.9);
+}
+.btn-soft:hover { background: #fff; }
+
+/* ===== Dashboard (index) ===== */
+.search-wrap {
+    border-radius: 14px;
+    border: 1px solid rgba(0,0,0,.08);
+    background: rgba(255,255,255,.85);
+}
+
+.city-card {
+    border-radius: var(--card-radius);
+    border: 1px solid rgba(0,0,0,.08);
+    background: rgba(255,255,255,.92);
+    box-shadow: 0 10px 30px rgba(0,0,0,.06);
+}
+
+.city-card:hover {
+    transform: translateY(-2px);
+    transition: 140ms ease;
+    box-shadow: 0 16px 40px rgba(0,0,0,.08);
+}
+
+.temp {
+    font-size: 2.4rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1;
+}
+
+.desc {
+    display: inline-flex;
+    align-items: center;
+    gap: .5rem;
+    padding: .35rem .6rem;
+    border-radius: 12px;
+    border: 1px solid rgba(0,0,0,.07);
+    background: rgba(0,0,0,.02);
+}
+
+/* ===== City details ===== */
+.table-wrap {
+    border-radius: 18px;
+    border: 1px solid rgba(0,0,0,.08);
+    overflow: hidden;
+    background: rgba(255,255,255,.92);
+    box-shadow: 0 10px 30px rgba(0,0,0,.06);
+}
+
+/* ===== Jobs + Logs (karty) ===== */
+.card-soft {
+    border-radius: var(--card-radius);
+    border: 1px solid rgba(0,0,0,.08);
+    background: rgba(255,255,255,.92);
+    box-shadow: 0 10px 30px rgba(0,0,0,.06);
+}
+
+/* Jobs */
+.accordion-item { overflow: hidden; }
+
+/* Logs */
+.logbox {
+    max-height: 70vh;
+    overflow: auto;
+    white-space: pre;
+    font-size: .9rem;
+}

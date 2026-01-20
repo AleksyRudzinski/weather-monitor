@@ -1,6 +1,9 @@
 package pl.edu.pjatk.weathermonitor.service;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -15,7 +18,6 @@ import pl.edu.pjatk.weathermonitor.repository.CityRepository;
 import pl.edu.pjatk.weathermonitor.repository.WeatherMeasurementRepository;
 import pl.edu.pjatk.weathermonitor.repository.WeatherSourceRepository;
 import pl.edu.pjatk.weathermonitor.service.dto.WeatherMeasurementResponse;
-
 
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
@@ -48,6 +50,11 @@ public class DefaultWeatherMeasurementService implements WeatherMeasurementServi
     }
 
     @Override
+    @Caching(evict = {
+            @CacheEvict(cacheNames = "latest", key = "#cityId"),
+            // historia ma różne limity (50, 100, ...) -> najprościej i pewnie czyścimy całą
+            @CacheEvict(cacheNames = "history", allEntries = true)
+    })
     public void refreshWeatherForCity(Long cityId) {
         City city = cityRepository.findById(cityId)
                 .orElseThrow(() -> new ResponseStatusException(
@@ -81,6 +88,7 @@ public class DefaultWeatherMeasurementService implements WeatherMeasurementServi
 
     @Override
     @Transactional(readOnly = true)
+    @Cacheable(cacheNames = "latest", key = "#cityId")
     public WeatherMeasurementResponse getLatest(Long cityId) {
         ensureCityExists(cityId);
 
@@ -96,6 +104,7 @@ public class DefaultWeatherMeasurementService implements WeatherMeasurementServi
 
     @Override
     @Transactional(readOnly = true)
+    @Cacheable(cacheNames = "history", key = "#cityId + ':' + #limit")
     public List<WeatherMeasurementResponse> getHistory(Long cityId, int limit) {
         ensureCityExists(cityId);
 

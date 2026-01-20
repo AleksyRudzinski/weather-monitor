@@ -1,0 +1,59 @@
+2026-01-20T15:34:56.877+01:00  INFO 33364 --- [weather-monitor] [main] p.e.p.w.WeatherMonitorApplication        : Starting WeatherMonitorApplication using Java 17.0.16 with PID 33364 (/Users/aleksyrudzinski/IdeaProjects/weather-monitor/weather-api/target/classes started by aleksyrudzinski in /Users/aleksyrudzinski/IdeaProjects/weather-monitor)
+2026-01-20T15:34:56.879+01:00  INFO 33364 --- [weather-monitor] [main] p.e.p.w.WeatherMonitorApplication        : No active profile set, falling back to 1 default profile: "default"
+2026-01-20T15:34:57.139+01:00  INFO 33364 --- [weather-monitor] [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-01-20T15:34:57.160+01:00  INFO 33364 --- [weather-monitor] [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 18 ms. Found 5 JPA repository interfaces.
+2026-01-20T15:34:57.350+01:00  INFO 33364 --- [weather-monitor] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
+2026-01-20T15:34:57.356+01:00  INFO 33364 --- [weather-monitor] [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2026-01-20T15:34:57.356+01:00  INFO 33364 --- [weather-monitor] [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.31]
+2026-01-20T15:34:57.375+01:00  INFO 33364 --- [weather-monitor] [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2026-01-20T15:34:57.375+01:00  INFO 33364 --- [weather-monitor] [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 477 ms
+2026-01-20T15:34:57.387+01:00  INFO 33364 --- [weather-monitor] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2026-01-20T15:34:57.470+01:00  INFO 33364 --- [weather-monitor] [main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection conn0: url=jdbc:h2:file:./data/weatherdb user=SA
+2026-01-20T15:34:57.471+01:00  INFO 33364 --- [weather-monitor] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2026-01-20T15:34:57.475+01:00  INFO 33364 --- [weather-monitor] [main] o.s.b.a.h2.H2ConsoleAutoConfiguration    : H2 console available at '/h2-console'. Database available at 'jdbc:h2:file:./data/weatherdb'
+2026-01-20T15:34:57.527+01:00  INFO 33364 --- [weather-monitor] [main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-01-20T15:34:57.549+01:00  INFO 33364 --- [weather-monitor] [main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.5.3.Final
+2026-01-20T15:34:57.563+01:00  INFO 33364 --- [weather-monitor] [main] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2026-01-20T15:34:57.677+01:00  INFO 33364 --- [weather-monitor] [main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-01-20T15:34:57.995+01:00  INFO 33364 --- [weather-monitor] [main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-01-20T15:34:58.013+01:00  INFO 33364 --- [weather-monitor] [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-01-20T15:34:58.107+01:00  INFO 33364 --- [weather-monitor] [main] o.s.d.j.r.query.QueryEnhancerFactory     : Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-01-20T15:34:58.346+01:00  INFO 33364 --- [weather-monitor] [main] o.s.b.a.w.s.WelcomePageHandlerMapping    : Adding welcome page template: index
+2026-01-20T15:34:58.482+01:00  INFO 33364 --- [weather-monitor] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8080 (http) with context path '/'
+2026-01-20T15:34:58.487+01:00  INFO 33364 --- [weather-monitor] [main] p.e.p.w.WeatherMonitorApplication        : Started WeatherMonitorApplication in 1.776 seconds (process running for 1.993)
+2026-01-20T15:35:03.501+01:00  INFO 33364 --- [weather-monitor] [scheduling-1] p.e.p.w.s.WeatherRefreshScheduler        : Scheduler: starting refresh for 15 cities
+2026-01-20T15:35:06.874+01:00  INFO 33364 --- [weather-monitor] [scheduling-1] p.e.p.w.s.WeatherRefreshScheduler        : Scheduler: done. JobId=1281, success=15, failed=0, durationMs=3364
+2026-01-20T15:35:07.151+01:00  INFO 33364 --- [weather-monitor] [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-01-20T15:35:07.152+01:00  INFO 33364 --- [weather-monitor] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2026-01-20T15:35:07.152+01:00  INFO 33364 --- [weather-monitor] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 0 ms
+2026-01-20T15:36:27.787+01:00  INFO 33364 --- [weather-monitor] [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-01-20T15:36:27.788+01:00  INFO 33364 --- [weather-monitor] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2026-01-20T15:36:27.789+01:00  INFO 33364 --- [weather-monitor] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2026-01-20T15:39:55.611+01:00  INFO 33593 --- [weather-monitor] [main] p.e.p.w.WeatherMonitorApplication        : Starting WeatherMonitorApplication using Java 17.0.16 with PID 33593 (/Users/aleksyrudzinski/IdeaProjects/weather-monitor/weather-api/target/classes started by aleksyrudzinski in /Users/aleksyrudzinski/IdeaProjects/weather-monitor)
+2026-01-20T15:39:55.612+01:00  INFO 33593 --- [weather-monitor] [main] p.e.p.w.WeatherMonitorApplication        : No active profile set, falling back to 1 default profile: "default"
+2026-01-20T15:39:55.803+01:00  INFO 33593 --- [weather-monitor] [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-01-20T15:39:55.822+01:00  INFO 33593 --- [weather-monitor] [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 17 ms. Found 5 JPA repository interfaces.
+2026-01-20T15:39:55.986+01:00  INFO 33593 --- [weather-monitor] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
+2026-01-20T15:39:55.990+01:00  INFO 33593 --- [weather-monitor] [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2026-01-20T15:39:55.990+01:00  INFO 33593 --- [weather-monitor] [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.31]
+2026-01-20T15:39:56.008+01:00  INFO 33593 --- [weather-monitor] [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2026-01-20T15:39:56.008+01:00  INFO 33593 --- [weather-monitor] [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 382 ms
+2026-01-20T15:39:56.018+01:00  INFO 33593 --- [weather-monitor] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2026-01-20T15:39:56.088+01:00  INFO 33593 --- [weather-monitor] [main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection conn0: url=jdbc:h2:file:./data/weatherdb user=SA
+2026-01-20T15:39:56.088+01:00  INFO 33593 --- [weather-monitor] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2026-01-20T15:39:56.092+01:00  INFO 33593 --- [weather-monitor] [main] o.s.b.a.h2.H2ConsoleAutoConfiguration    : H2 console available at '/h2-console'. Database available at 'jdbc:h2:file:./data/weatherdb'
+2026-01-20T15:39:56.137+01:00  INFO 33593 --- [weather-monitor] [main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-01-20T15:39:56.152+01:00  INFO 33593 --- [weather-monitor] [main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.5.3.Final
+2026-01-20T15:39:56.160+01:00  INFO 33593 --- [weather-monitor] [main] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2026-01-20T15:39:56.244+01:00  INFO 33593 --- [weather-monitor] [main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-01-20T15:39:56.533+01:00  INFO 33593 --- [weather-monitor] [main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-01-20T15:39:56.550+01:00  INFO 33593 --- [weather-monitor] [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-01-20T15:39:56.637+01:00  INFO 33593 --- [weather-monitor] [main] o.s.d.j.r.query.QueryEnhancerFactory     : Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-01-20T15:39:56.845+01:00  INFO 33593 --- [weather-monitor] [main] o.s.b.a.w.s.WelcomePageHandlerMapping    : Adding welcome page template: index
+2026-01-20T15:39:56.998+01:00  INFO 33593 --- [weather-monitor] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8080 (http) with context path '/'
+2026-01-20T15:39:57.002+01:00  INFO 33593 --- [weather-monitor] [main] p.e.p.w.WeatherMonitorApplication        : Started WeatherMonitorApplication in 1.523 seconds (process running for 1.68)
+2026-01-20T15:40:00.840+01:00  INFO 33593 --- [weather-monitor] [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-01-20T15:40:00.840+01:00  INFO 33593 --- [weather-monitor] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2026-01-20T15:40:00.841+01:00  INFO 33593 --- [weather-monitor] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
+2026-01-20T15:40:02.018+01:00  INFO 33593 --- [weather-monitor] [scheduling-1] p.e.p.w.s.WeatherRefreshScheduler        : Scheduler: starting refresh for 15 cities
+2026-01-20T15:40:05.158+01:00  INFO 33593 --- [weather-monitor] [scheduling-1] p.e.p.w.s.WeatherRefreshScheduler        : Scheduler: done. JobId=1313, success=15, failed=0, durationMs=3128

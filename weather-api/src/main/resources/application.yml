@@ -14,9 +14,10 @@ spring:
       path: /h2-console
 
   jpa:
+    open-in-view: false
     hibernate:
       ddl-auto: update
-    show-sql: true
+    show-sql: false
     properties:
       hibernate:
         format_sql: true
@@ -28,6 +29,12 @@ spring:
     serialization:
       indent_output: true
       write-dates-as-timestamps: false
+
+  cache:
+    type: caffeine
+    cache-names: latest, history
+    caffeine:
+      spec: maximumSize=2000,expireAfterWrite=60s
 
 server:
   port: 8080
@@ -46,3 +53,12 @@ weather:
   measurements:
     history-limit: 50
 
+logging:
+  file:
+    name: logs/weather-monitor.log
+  level:
+    root: INFO
+    pl.edu.pjatk.weathermonitor: INFO
+    org.springframework.web: INFO
+    org.hibernate.SQL: OFF
+    org.hibernate.type.descriptor.sql: OFF
