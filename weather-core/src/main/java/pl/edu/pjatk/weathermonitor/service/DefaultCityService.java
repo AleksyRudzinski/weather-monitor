@@ -2,8 +2,10 @@ package pl.edu.pjatk.weathermonitor.service;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 import pl.edu.pjatk.weathermonitor.domain.City;
 import pl.edu.pjatk.weathermonitor.repository.CityRepository;
 import pl.edu.pjatk.weathermonitor.service.dto.CityCreateRequest;
@@ -63,7 +65,10 @@ public class DefaultCityService implements CityService {
     @Transactional(readOnly = true)
     public CityResponse getCityById(Long cityId) {
         City city = cityRepository.findById(cityId)
-                .orElseThrow(() -> new IllegalArgumentException("City not found: " + cityId));
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND,
+                        "City not found: " + cityId
+                ));
 
         return mapToResponse(city);
     }

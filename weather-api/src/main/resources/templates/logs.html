@@ -7,7 +7,6 @@
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" th:href="@{/css/style.css}">
-
 </head>
 
 <body>
@@ -32,29 +31,29 @@
     <!-- toast / alert po wyczyszczeniu -->
     <div th:if="${toastSuccess}" class="alert alert-success shadow-sm" th:text="${toastSuccess}"></div>
 
-    <div class="d-flex justify-content-between align-items-end mb-3">
+        <div class="d-flex justify-content-between align-items-end mb-3">
         <div>
             <div class="fw-semibold fs-3">Log viewer</div>
-            <div class="text-muted">Ostatnie linie z pliku logów</div>
+            <div class="muted-mini">Ostatnie linie z pliku logów</div>
         </div>
 
         <div class="d-flex gap-2 flex-wrap justify-content-end">
             <!-- refresh + lines -->
             <form class="d-flex gap-2" method="get" th:action="@{/ui/logs}">
-                <select name="lines" class="form-select" style="max-width: 140px;">
+                <select name="lines" class="form-select select-compact">
                     <option value="100" th:selected="${lines == 100}">100</option>
                     <option value="200" th:selected="${lines == 200}">200</option>
                     <option value="400" th:selected="${lines == 400}">400</option>
                     <option value="800" th:selected="${lines == 800}">800</option>
                 </select>
-                <button class="btn btn-primary" type="submit">Odśwież</button>
+                <button class="btn btn-primary btn-rounded" type="submit">Odśwież</button>
             </form>
 
             <!-- Clear -->
             <form method="post"
                   th:action="@{/ui/logs/clear(lines=${lines})}"
                   onsubmit="return confirm('Na pewno wyczyścić logi?');">
-                <button class="btn btn-outline-danger" type="submit">Wyczyść</button>
+                <button class="btn btn-outline-danger btn-rounded" type="submit">Wyczyść</button>
             </form>
 
             <!-- API -->
@@ -67,7 +66,7 @@
         <div class="logbox mono" th:text="${content}">logs...</div>
     </div>
 
-    <div class="text-center text-muted mt-4">
+    <div class="text-center muted-mini mt-4">
         Weather Monitor — Spring Boot + Thymeleaf · Logs
     </div>
 

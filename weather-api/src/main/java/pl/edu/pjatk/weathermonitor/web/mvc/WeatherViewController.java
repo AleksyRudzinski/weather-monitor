@@ -49,7 +49,6 @@ public class WeatherViewController {
                                 latest.measuredAt()
                         );
                     } catch (Exception e) {
-                        // brak pomiaru -> karta bez danych
                         return new CityDashboardItem(
                                 city.id(), city.name(), city.countryCode(), city.latitude(), city.longitude(),
                                 null, null, null, null, null, null
@@ -70,7 +69,6 @@ public class WeatherViewController {
     public String getCityDetails(@PathVariable Long cityId, Model model) {
         var city = cityService.getCityById(cityId);
 
-        // latest może nie istnieć -> wtedy nie wywalamy całej strony
         Object latest;
         try {
             latest = weatherMeasurementService.getLatest(cityId);
@@ -88,7 +86,6 @@ public class WeatherViewController {
         return "city-details";
     }
 
-    // refresh z DASHBOARDU -> wracamy na "/"
     @PostMapping("/ui/cities/{cityId}/refresh")
     public String refreshCityFromDashboard(@PathVariable Long cityId, RedirectAttributes ra) {
         try {
@@ -100,7 +97,6 @@ public class WeatherViewController {
         return "redirect:/";
     }
 
-    // refresh ze SZCZEGÓŁÓW -> wracamy na "/ui/cities/{id}"
     @PostMapping("/ui/cities/{cityId}/refresh/details")
     public String refreshCityFromDetails(@PathVariable Long cityId, RedirectAttributes ra) {
         try {

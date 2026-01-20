@@ -1,4 +1,9 @@
-:root { --card-radius: 18px; }
+:root {
+    --card-radius: 18px;
+    --btn-radius: 14px;
+    --soft-border: 1px solid rgba(0,0,0,.08);
+    --soft-bg: rgba(255,255,255,.92);
+}
 
 /* ===== Base / wspólne ===== */
 body {
@@ -20,7 +25,7 @@ body {
     border: 1px solid rgba(0,0,0,.06);
 }
 
-.pill { border: 1px solid rgba(0,0,0,.08); border-radius: 999px; }
+.pill { border: var(--soft-border); border-radius: 999px; }
 .muted-mini { color: rgba(0,0,0,.58); font-size: .92rem; }
 .mono {
     font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
@@ -34,29 +39,32 @@ body {
 }
 
 .btn-soft {
-    border-radius: 12px;
-    border: 1px solid rgba(0,0,0,.08);
+    border-radius: var(--btn-radius);
+    border: var(--soft-border);
     background: rgba(255,255,255,.9);
+    transition: background 120ms ease, box-shadow 120ms ease, border-color 120ms ease;
 }
 .btn-soft:hover { background: #fff; }
+.btn-rounded { border-radius: var(--btn-radius); }
+.select-compact { max-width: 140px; }
 
 /* ===== Dashboard (index) ===== */
 .search-wrap {
     border-radius: 14px;
-    border: 1px solid rgba(0,0,0,.08);
+    border: var(--soft-border);
     background: rgba(255,255,255,.85);
 }
 
 .city-card {
     border-radius: var(--card-radius);
-    border: 1px solid rgba(0,0,0,.08);
-    background: rgba(255,255,255,.92);
+    border: var(--soft-border);
+    background: var(--soft-bg);
     box-shadow: 0 10px 30px rgba(0,0,0,.06);
+    transition: transform 140ms ease, box-shadow 140ms ease;
 }
 
 .city-card:hover {
     transform: translateY(-2px);
-    transition: 140ms ease;
     box-shadow: 0 16px 40px rgba(0,0,0,.08);
 }
 
@@ -80,17 +88,17 @@ body {
 /* ===== City details ===== */
 .table-wrap {
     border-radius: 18px;
-    border: 1px solid rgba(0,0,0,.08);
+    border: var(--soft-border);
     overflow: hidden;
-    background: rgba(255,255,255,.92);
+    background: var(--soft-bg);
     box-shadow: 0 10px 30px rgba(0,0,0,.06);
 }
 
 /* ===== Jobs + Logs (karty) ===== */
 .card-soft {
     border-radius: var(--card-radius);
-    border: 1px solid rgba(0,0,0,.08);
-    background: rgba(255,255,255,.92);
+    border: var(--soft-border);
+    background: var(--soft-bg);
     box-shadow: 0 10px 30px rgba(0,0,0,.06);
 }
 
@@ -103,4 +111,5 @@ body {
     overflow: auto;
     white-space: pre;
     font-size: .9rem;
+    line-height: 1.35;
 }

@@ -24,7 +24,6 @@ import java.time.ZoneOffset;
 import java.util.List;
 
 @Service
-@Transactional
 public class DefaultWeatherMeasurementService implements WeatherMeasurementService {
 
     private static final String OPENWEATHER_CODE = "OPENWEATHER";
@@ -52,9 +51,9 @@ public class DefaultWeatherMeasurementService implements WeatherMeasurementServi
     @Override
     @Caching(evict = {
             @CacheEvict(cacheNames = "latest", key = "#cityId"),
-            // historia ma różne limity (50, 100, ...) -> najprościej i pewnie czyścimy całą
             @CacheEvict(cacheNames = "history", allEntries = true)
     })
+    @Transactional
     public void refreshWeatherForCity(Long cityId) {
         City city = cityRepository.findById(cityId)
                 .orElseThrow(() -> new ResponseStatusException(
@@ -70,6 +69,31 @@ public class DefaultWeatherMeasurementService implements WeatherMeasurementServi
         OpenWeatherCurrentResponse response =
                 openWeatherClient.getCurrentWeather(city.getLatitude(), city.getLongitude());
 
+        if (response == null || response.main() == null || response.wind() == null) {
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_GATEWAY,
+                    "OpenWeather response missing required fields"
+            );
+        }
+
+        String description = "unknown";
+        if (response.weather() != null && !response.weather().isEmpty() && response.weather().get(0) != null) {
+            if (response.weather().get(0).description() != null) {
+                description = response.weather().get(0).description();
+            }
+        }
+
+        if (response.main().temp() == null
+                || response.main().feels_like() == null
+                || response.main().humidity() == null
+                || response.main().pressure() == null
+                || response.wind().speed() == null) {
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_GATEWAY,
+                    "OpenWeather response missing required measurements"
+            );
+        }
+
         WeatherMeasurement measurement = new WeatherMeasurement(
                 city,
                 source,
@@ -78,7 +102,7 @@ public class DefaultWeatherMeasurementService implements WeatherMeasurementServi
                 response.main().humidity(),
                 response.main().pressure(),
                 response.wind().speed(),
-                response.weather().get(0).description(),
+                description,
                 OffsetDateTime.now(ZoneOffset.UTC)
         );
 
@@ -120,6 +144,10 @@ public class DefaultWeatherMeasurementService implements WeatherMeasurementServi
     }
 
     private void trimHistory(Long cityId) {
+        if (historyLimit < 1) {
+            return;
+        }
+
         var measurements = weatherRepository.findByCity_IdOrderByMeasuredAtDesc(
                 cityId,
                 PageRequest.of(0, historyLimit + 1)

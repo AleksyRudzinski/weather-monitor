@@ -43,7 +43,6 @@ public class LogsRestController {
             return "Log file not found: " + path;
         }
 
-        // utnij plik do zera
         Files.newBufferedWriter(
                 path,
                 StandardCharsets.UTF_8,
